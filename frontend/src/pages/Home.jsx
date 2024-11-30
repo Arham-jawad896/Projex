@@ -8,5 +8,5 @@ const Home = () => {
     </section>
   )
 }
-i am doing something wait a minute i will start another meet send me the link okay
-export default Home I think we should start tommorow, because currently, this is inconveniant, we cannot talk
+
+export default Home 

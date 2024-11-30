@@ -1,8 +1,7 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 
-
-// Critical CSS (consider extracting to an external CSS file for production)
+// Critical CSS with improved responsive design
 const criticalCSS = `
   :root {
     --bg-dark: #0A0E14;
@@ -23,6 +22,12 @@ const criticalCSS = `
     color: var(--text-primary);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     line-height: 1.6;
+    overscroll-behavior-x: none;
+  }
+  @media (max-width: 768px) {
+    body {
+      overflow-x: hidden;
+    }
   }
 `;
 
@@ -76,13 +81,14 @@ const Icon = ({ icon }) => {
 // Optimized Navbar Component
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const mobileMenuRef = useRef(null);
+  
   const navItems = useMemo(
     () => [
-      { label: "Home", href: "#", icon: "home" },
-      { label: "Pricing", href: "#", icon: "pricing" },
-      { label: "Features", href: "#", icon: "features" },
-      { label: "About", href: "#", icon: "about" },
+      { label: "Home", href: "#home", icon: "home" },
+      { label: "Pricing", href: "#pricing", icon: "pricing" },
+      { label: "Features", href: "#features", icon: "features" },
+      { label: "About", href: "#about", icon: "about" },
     ],
     []
   );
@@ -91,30 +97,31 @@ const Navbar = () => {
     setIsMenuOpen((prev) => !prev);
   }, []);
 
+  // Close mobile menu when clicking outside
   useEffect(() => {
-    const preloadAssets = [
-      {
-        rel: "preload",
-        href: "/fonts/inter-variable.woff2",
-        as: "font",
-        type: "font/woff2",
-        crossOrigin: "anonymous",
-      },
-      { rel: "preload", href: "/logo.svg", as: "image" },
-    ];
+    const handleClickOutside = (event) => {
+      if (
+        isMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
 
-    preloadAssets.forEach(({ rel, href, as, type, crossOrigin }) => {
-      const link = document.createElement("link");
-      link.rel = rel;
-      link.href = href;
-      link.as = as;
-      if (type) link.type = type;
-      if (crossOrigin) link.crossOrigin = crossOrigin;
-      document.head.appendChild(link);
-    });
+    // Prevent scroll when mobile menu is open
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.body.style.overflow = 'unset';
+    }
 
-    document.body.classList.remove("loading");
-  }, []);
+    return () => {
+      document.body.style.overflow = 'unset';
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   return (
     <>
@@ -123,6 +130,7 @@ const Navbar = () => {
           name="description"
           content="Explore our innovative platform for managing projects, pricing, and features. Join us for an enhanced experience!"
         />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       </Helmet>
       <style>{criticalCSS}</style>
       <nav
@@ -131,60 +139,91 @@ const Navbar = () => {
         role="navigation"
         className="fixed top-0 left-0 w-full z-50 bg-[var(--bg-dark)] backdrop-blur-xl border-b border-[#1c1c1c]/50"
       >
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center max-w-7xl">
-          <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-cyan-500/20 rounded-full flex items-center justify-center">
-              <span className="text-cyan-400 font-bold text-xl">Σ</span>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center max-w-7xl">
+          {/* Logo Section */}
+          <div className="flex items-center space-x-2 flex-shrink-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-cyan-500/20 rounded-full flex items-center justify-center">
+              <span className="text-cyan-400 font-bold text-base sm:text-xl">Σ</span>
             </div>
           </div>
-          <ul className="hidden md:flex space-x-8 items-center">
+
+          {/* Desktop Navigation */}
+          <ul className="hidden md:flex space-x-4 lg:space-x-8 items-center flex-1 justify-center">
             {navItems.map(({ label, href, icon }) => (
               <li key={label} className="group relative">
                 <a
                   href={href}
-                  className="flex items-center gap-2 text-neutral-400 hover:text-[var(--hover-color)] transition-colors duration-300 px-3 py-2 rounded-xl group-hover:text-[var(--active-link-color)]"
+                  className="flex items-center gap-2 text-neutral-400 hover:text-[var(--hover-color)] transition-colors duration-300 px-2 lg:px-3 py-2 rounded-xl group-hover:text-[var(--active-link-color)]"
                   rel="noopener"
                   aria-label={`Navigate to ${label}`}
                 >
                   <Icon icon={icon} />
-                  <span className="font-medium tracking-wide">{label}</span>
+                  <span className="font-medium tracking-wide text-sm lg:text-base">{label}</span>
                 </a>
               </li>
             ))}
           </ul>
-          <div className="flex items-center space-x-4">
+
+          {/* Action Buttons */}
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <button
-              className="bg-cyan-500/10 text-cyan-400 px-6 py-2.5 rounded-xl hover:bg-cyan-500/20 border border-cyan-500/30 transition-all font-semibold tracking-wider uppercase text-sm"
+              className="hidden sm:block bg-cyan-500/10 text-cyan-400 px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 rounded-xl hover:bg-cyan-500/20 border border-cyan-500/30 transition-all font-semibold tracking-wider uppercase text-xs sm:text-sm"
               aria-label="Sign In"
               type="button"
             >
               Sign In
             </button>
             <button
-              className="bg-gray-800 text-white px-6 py-2.5 rounded-xl hover:bg-gray-700 border border-gray-600 transition-all font-semibold tracking-wider uppercase text-sm shadow-md"
+              className="hidden sm:block bg-gray-800 text-white px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 rounded-xl hover:bg-gray-700 border border-gray-600 transition-all font-semibold tracking-wider uppercase text-xs sm:text-sm shadow-md"
               aria-label="Sign Up"
               type="button"
             >
               Sign Up
             </button>
           </div>
+
+          {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden text-cyan-400 hover:text-white transition-colors"
+            className="md:hidden text-cyan-400 hover:text-white transition-colors z-60"
             onClick={toggleMobileMenu}
             aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
             aria-expanded={isMenuOpen}
           >
-            {isMenuOpen ? "✕" : "☰"}
+            {isMenuOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            )}
           </button>
         </div>
-        {isMenuOpen && (
-          <div className="fixed inset-0 bg-[var(--bg-dark)]/95 md:hidden z-40 flex flex-col items-center justify-center">
-            <ul className="space-y-6 text-center text-cyan-400 text-2xl">
+      </nav>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div ref={mobileMenuRef} className="fixed inset-0 bg-[var(--bg-dark)]/95 md:hidden z-50 flex flex-col items-center overflow-auto pt-20">
+          <div className="w-full max-w-md px-6 space-y-8">
+            {/* Clickable X button */}
+            <button
+              onClick={toggleMobileMenu}
+              className="absolute top-6 right-6 text-cyan-400 text-3xl"
+              aria-label="Close Menu"
+            >
+              ✕
+            </button>
+
+            <ul className="space-y-6 text-center text-cyan-400 text-xl">
               {navItems.map(({ label, href, icon }) => (
-                <li key={label}>
+                <li key={label} className="transform transition-all duration-300 hover:scale-105">
                   <a
                     href={href}
-                    className="block py-3 hover:text-white transition-colors flex items-center justify-center gap-3"
+                    className="block py-3 hover:text-white transition-colors flex items-center justify-center gap-4"
                     onClick={toggleMobileMenu}
                   >
                     <Icon icon={icon} />
@@ -193,11 +232,30 @@ const Navbar = () => {
                 </li>
               ))}
             </ul>
+
+            <div className="flex flex-col space-y-4 mt-8 w-full">
+              <button
+                className="w-full bg-cyan-500/10 text-cyan-400 py-3 rounded-xl hover:bg-cyan-500/20 border border-cyan-500/30 transition-all font-semibold tracking-wider uppercase"
+                aria-label="Sign In"
+                type="button"
+                onClick={toggleMobileMenu}
+              >
+                Sign In
+              </button>
+              <button
+                className="w-full bg-gray-800 text-white py-3 rounded-xl hover:bg-gray-700 border border-gray-600 transition-all font-semibold tracking-wider uppercase shadow-md"
+                aria-label="Sign Up"
+                type="button"
+                onClick={toggleMobileMenu}
+              >
+                Sign Up
+              </button>
+            </div>
           </div>
-        )}
-      </nav>
+        </div>
+      )}
     </>
   );
 };
 
-export default React.memo(Navbar);
+export default Navbar;

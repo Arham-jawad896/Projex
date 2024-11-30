@@ -34,9 +34,9 @@ Projex is a next-generation project management platform designed for modern team
 - HTML5 / CSS3
 
 ### Backend
-- Node.js
-- Express.js
-- MongoDB / MySQL
+- Django (Python)
+- Django Rest Framework (DRF) for REST APIs
+- PostgreSQL / MongoDB / MySQL
 - REST APIs
 
 ### Machine Learning
@@ -119,7 +119,8 @@ Ensure all changes are reviewed and approved by at least one other developer bef
   React.js, Redux Toolkit, Tailwind CSS, JavaScript
 
 - **Backend Developer / Full-Stack Developer:** Muhammad Saqlain Arshad  
-  Node.js, Express.js, MongoDB, MySQL, Security
+  Django, Django Rest Framework (DRF) for REST APIs
+  , MongoDB, MySQL, PostgreSQL, Security
 
 - **ML Engineer / Backend Developer:** Muhammad Arham Jawad  
   TensorFlow, Keras, Flask, Machine Learning Integration

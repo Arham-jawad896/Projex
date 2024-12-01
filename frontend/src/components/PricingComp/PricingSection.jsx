@@ -31,7 +31,7 @@ const pricingTiers = [
 // Pricing Card component for each tier
 const PricingCard = ({ tier }) => (
   <motion.div
-    className="flex flex-col bg-card-background shadow-lg rounded-xl p-8 transform transition-all hover:scale-105 hover:shadow-2xl"
+    className="flex flex-col bg-card-background shadow-lg rounded-xl p-8 transform transition-all hover:scale-105 hover:shadow-2xl card-shine-effect" // Add the shine effect here
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.8, ease: 'easeOut' }}

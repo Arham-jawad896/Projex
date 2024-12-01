@@ -207,49 +207,39 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div ref={mobileMenuRef} className="fixed inset-0 bg-[var(--bg-dark)]/95 md:hidden z-50 flex flex-col items-center overflow-auto pt-20">
-          <div className="w-full max-w-md px-6 space-y-8">
-            {/* Clickable X button */}
+        <div
+          ref={mobileMenuRef}
+          className="fixed inset-0 bg-black bg-opacity-50 md:hidden flex justify-center items-center z-50"
+          aria-hidden={!isMenuOpen}
+        >
+          <div className="bg-[var(--bg-dark)] w-4/5 max-w-md mx-auto p-4 rounded-lg shadow-lg">
             <button
+              className="absolute top-3 right-3 text-white text-xl"
               onClick={toggleMobileMenu}
-              className="absolute top-6 right-6 text-cyan-400 text-3xl"
               aria-label="Close Menu"
             >
-              ✕
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
             </button>
-
-            <ul className="space-y-6 text-center text-cyan-400 text-xl">
+            <ul className="space-y-6">
               {navItems.map(({ label, href, icon }) => (
-                <li key={label} className="transform transition-all duration-300 hover:scale-105">
+                <li key={label} className="text-xl">
                   <a
                     href={href}
-                    className="block py-3 hover:text-white transition-colors flex items-center justify-center gap-4"
-                    onClick={toggleMobileMenu}
+                    className="flex items-center space-x-4 text-neutral-400 hover:text-[var(--hover-color)] transition-colors duration-300"
                   >
                     <Icon icon={icon} />
-                    {label}
+                    <span>{label}</span>
                   </a>
                 </li>
               ))}
             </ul>
 
-            <div className="flex flex-col space-y-4 mt-8 w-full">
-              <button
-                className="w-full bg-cyan-500/10 text-cyan-400 py-3 rounded-xl hover:bg-cyan-500/20 border border-cyan-500/30 transition-all font-semibold tracking-wider uppercase"
-                aria-label="Sign In"
-                type="button"
-                onClick={toggleMobileMenu}
-              >
-                Sign In
-              </button>
-              <button
-                className="w-full bg-gray-800 text-white py-3 rounded-xl hover:bg-gray-700 border border-gray-600 transition-all font-semibold tracking-wider uppercase shadow-md"
-                aria-label="Sign Up"
-                type="button"
-                onClick={toggleMobileMenu}
-              >
-                Sign Up
-              </button>
+            <div className="mt-8">
+              <button className="w-full bg-cyan-500/10 text-cyan-400 px-4 py-2.5 rounded-xl mb-3">Sign In</button>
+              <button className="w-full bg-gray-800 text-white px-4 py-2.5 rounded-xl">Sign Up</button>
             </div>
           </div>
         </div>

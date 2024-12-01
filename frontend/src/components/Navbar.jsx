@@ -86,9 +86,9 @@ const Navbar = () => {
   const navItems = useMemo(
     () => [
       { label: "Home", href: "#home", icon: "home" },
-      { label: "Pricing", href: "#pricing", icon: "pricing" },
-      { label: "Features", href: "#features", icon: "features" },
       { label: "About", href: "#about", icon: "about" },
+      { label: "Features", href: "#features", icon: "features" },
+      { label: "Pricing", href: "#pricing", icon: "pricing" },
     ],
     []
   );

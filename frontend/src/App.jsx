@@ -1,9 +1,11 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Suspense, lazy } from 'react';  // Import Suspense and lazy
 import './index.css';
-import Layout from './Layout/MainLayout'; // Import your Layout component
 import { Helmet } from 'react-helmet'; // Import react-helmet for SEO
-import Home from './pages/Home'; // Import Home directly
-import Features from './components/HighLightFeature/Features'; // Import Features
+import Layout from './Layout/MainLayout'; // Layout component
+
+// Lazy load Home component and other heavy components
+const Home = lazy(() => import('./pages/Home')); // Lazy load Home component
 
 // Main App component
 function App() {
@@ -30,7 +32,11 @@ function App() {
       children: [
         {
           path: '/',
-          element: <Home />, // Directly use Home component
+          element: (
+            <Suspense fallback={<div>Loading...</div>}>  {/* Suspense for lazy-loaded component */}
+              <Home />
+            </Suspense>
+          ),
         },
       ],
     },

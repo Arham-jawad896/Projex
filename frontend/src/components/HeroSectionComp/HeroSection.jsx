@@ -1,8 +1,9 @@
-import React, { memo, lazy, Suspense } from 'react';
-import { motion } from 'framer-motion';
+import React, { memo, lazy, Suspense } from "react";
+import { motion } from "framer-motion";
+import { SignUpButton } from "@clerk/clerk-react";
 
 // Lazy load the Helmet component to optimize rendering
-const Helmet = lazy(() => import('react-helmet'));
+const Helmet = lazy(() => import("react-helmet"));
 
 const HeroSection = () => {
   return (
@@ -10,7 +11,7 @@ const HeroSection = () => {
       className="py-28 lg:py-40 max-w-7xl mx-auto text-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1.5, ease: 'easeInOut' }}
+      transition={{ duration: 1.5, ease: "easeInOut" }}
     >
       {/* Lazy load Helmet for SEO improvement */}
       <Suspense fallback={null}>
@@ -33,10 +34,11 @@ const HeroSection = () => {
         className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: 'easeOut' }}
+        transition={{ duration: 1, ease: "easeOut" }}
       >
-        Revolutionize{' '}
-        <span className="text-text-heading">Project Management</span> with AI-Powered Tools
+        Revolutionize{" "}
+        <span className="text-text-heading">Project Management</span> with
+        AI-Powered Tools
       </motion.h1>
 
       {/* Description with subtle fade-in and upward motion */}
@@ -44,22 +46,23 @@ const HeroSection = () => {
         className="text-lg sm:text-xl mb-6 text-text-primary/95"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
+        transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
       >
-        Harness AI, smart forecasting, real-time collaboration, and advanced workflow automation to streamline your projects and achieve your goals faster.
+        Harness AI, smart forecasting, real-time collaboration, and advanced
+        workflow automation to streamline your projects and achieve your goals
+        faster.
       </motion.p>
 
       {/* Button with subtle scale-up on hover */}
-      <motion.button
-        onClick={() => window.location.href = '#signup'}
-        className="bg-button-cyanButton hover:bg-button-cyanButtonHover text-text-heading py-3 px-6 rounded-full text-lg font-semibold transition-all duration-300 ease-in-out"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, ease: 'easeInOut' }}
-        whileHover={{ scale: 1.05, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}
-      >
-        Get Started Today
-      </motion.button>
+      <SignUpButton>
+        <button
+          className="bg-cyan-500/10 text-cyan-400 px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 rounded-xl hover:bg-cyan-500/20 border border-cyan-500/30 transition-all font-semibold tracking-wider uppercase text-xs sm:text-sm"
+          aria-label="Sign Up"
+          type="button"
+        >
+          Get Started Todayssss
+        </button>
+      </SignUpButton>
     </motion.section>
   );
 };

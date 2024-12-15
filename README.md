@@ -115,14 +115,12 @@ Open a pull request to the main branch once the feature is complete.
 Ensure all changes are reviewed and approved by at least one other developer before merging.
 
 ## 👥 Team Roles
-- **Frontend Developer:** Muhammad Ahmad Mamoon  
-  React.js, Redux Toolkit, Tailwind CSS, JavaScript
 
-- **Backend Developer / Full-Stack Developer:** Muhammad Saqlain Arshad  
+- **Backend Developer / Co-Founder:** Muhammad Saqlain Arshad  
   Django, Django Rest Framework (DRF) for REST APIs
   , MongoDB, MySQL, PostgreSQL, Security
 
-- **ML Engineer / Backend Developer:** Muhammad Arham Jawad  
+- **ML Engineer / Frontend Developer / Founder:** Muhammad Arham Jawad  
   TensorFlow, Keras, Flask, Machine Learning Integration
 
 - **DevOps Lead:** (Shared Role)  

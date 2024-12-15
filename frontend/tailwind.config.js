@@ -20,7 +20,7 @@ export default {
           hover: '#1A1F2B',
           secondary: '#1A1F2B',
           secondaryHover: '#2C3142',
-          cyanButton: '#06B6D41A',
+          cyanButton: '/',
           cyanButtonHover: '#06b6d433',
         },
         link: {

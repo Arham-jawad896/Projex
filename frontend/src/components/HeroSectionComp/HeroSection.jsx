@@ -60,7 +60,7 @@ const HeroSection = () => {
           aria-label="Sign Up"
           type="button"
         >
-          Get Started Todayssss
+          Get Started Today
         </button>
       </SignUpButton>
     </motion.section>

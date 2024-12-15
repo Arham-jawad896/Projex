@@ -33,7 +33,7 @@ const criticalCSS = `
 `;
 
 // SVG Icons as Functional Components
-const Icon = React.memo(({ icon }) => {
+const Icon = React.memo(({ icon, className = "" }) => {
   const icons = useMemo(() => ({
     home: (
       <>
@@ -61,9 +61,9 @@ const Icon = React.memo(({ icon }) => {
         <line x1="12" y1="8" x2="12" y2="12" />
         <line x1="12" y1="16" x2="12" y2="16" />
       </>
-    ),
-  }), []);
-  
+    )
+  }), []); 
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +73,7 @@ const Icon = React.memo(({ icon }) => {
       fill="none"
       stroke="currentColor"
       strokeWidth="1.5"
-      className="nav-icon"
+      className={`nav-icon ${className}`}
     >
       {icons[icon]}
     </svg>
@@ -86,24 +86,28 @@ const PostLoginNavbar = () => {
   const mobileMenuRef = useRef(null);
 
   const navItems = useMemo(() => [
-    { label: "Home", href: "#home", icon: "home" },
-    { label: "Projects", href: "#about", icon: "about" },
-    { label: "Tasks", href: "#features", icon: "features" },
-    { label: "Calendar", href: "#pricing", icon: "pricing" },
-    { label: "Team", href: "#pricing", icon: "pricing" },
-    { label: "Analytics", href: "#pricing", icon: "pricing" },
-    { label: "Integrations", href: "#pricing", icon: "pricing" },
-    { label: "Settings", href: "#pricing", icon: "pricing" },
-    { label: "Help", href: "#pricing", icon: "pricing" },
+    { label: "Home", href: "/home", icon: "home" },
+    { label: "Projects", href: "/projects", icon: "about" },
+    { label: "Tasks", href: "/tasks", icon: "features" },
+    { label: "Calendar", href: "/calendar", icon: "pricing" },
+    { label: "Team", href: "/team", icon: "pricing" },
+    { label: "Analytics", href: "/analytics", icon: "pricing" },
+    { label: "Integrations", href: "/integrations", icon: "pricing" },
+    { label: "Settings", href: "/settings", icon: "pricing" },
+    { label: "Help", href: "/help", icon: "pricing" }
   ], []);
 
   const toggleMobileMenu = useCallback(() => {
-    setIsMenuOpen(prev => !prev);
+    setIsMenuOpen((prev) => !prev);
   }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isMenuOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+      if (
+        isMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
         setIsMenuOpen(false);
       }
     };
@@ -143,7 +147,9 @@ const PostLoginNavbar = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center max-w-7xl">
           <div className="flex items-center space-x-2 flex-shrink-0 ml-[-100px]">
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-cyan-500/20 rounded-full flex items-center justify-center ml-[-100px]">
-              <span className="text-cyan-400 font-bold text-base sm:text-xl">Σ</span>
+              <span className="text-cyan-400 font-bold text-base sm:text-xl">
+                Σ
+              </span>
             </div>
           </div>
 
@@ -187,52 +193,69 @@ const PostLoginNavbar = () => {
               </SignUpButton>
             </SignedOut>
             <SignedIn>
-              <UserButton />
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: {
+                      width: "40px", // Example size, adjust as needed
+                      height: "40px"
+                    }
+                  }
+                }}
+              />
             </SignedIn>
           </div>
 
+          {/* Hamburger Menu Button */}
           <button
-            className="md:hidden text-cyan-400 hover:text-white transition-colors z-60"
+            className="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1 z-60"
             onClick={toggleMobileMenu}
             aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
             aria-expanded={isMenuOpen}
           >
-            {isMenuOpen ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
-            )}
+            <div
+              className={`w-6 h-1 bg-white rounded-full transition-transform duration-300 ease-in-out ${isMenuOpen ? 'transform rotate-45 translate-y-2' : ''}`}
+            />
+            <div
+              className={`w-6 h-1 bg-white rounded-full transition-opacity duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`}
+            />
+            <div
+              className={`w-6 h-1 bg-white rounded-full transition-transform duration-300 ease-in-out ${isMenuOpen ? 'transform -rotate-45 -translate-y-2' : ''}`}
+            />
           </button>
-        </div>
 
-        <div
-          ref={mobileMenuRef}
-          className={`md:hidden transition-all transform absolute left-0 top-0 w-full h-full bg-[var(--bg-dark)] backdrop-blur-xl border-t border-[#1c1c1c]/40 overflow-hidden overflow-y-auto z-50 ${
-            isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="container mx-auto px-4 py-4">
-            <ul className="space-y-4">
-              {navItems.map(({ label, href, icon }) => (
-                <li key={label}>
+          {/* Mobile Menu */}
+          {isMenuOpen && (
+            <div
+              className="absolute top-0 right-0 left-0 bottom-0 bg-black/80 md:hidden"
+              ref={mobileMenuRef}
+            >
+              <div className="flex flex-col justify-center items-center gap-4 py-8 text-lg text-neutral-300 bg-[#111111] px-6">
+                {navItems.map(({ label, href, icon }) => (
                   <a
+                    key={label}
                     href={href}
-                    className="flex items-center gap-2 text-neutral-400 hover:text-[var(--hover-color)] transition-colors duration-300 px-4 py-3 rounded-xl group"
+                    className="flex items-center gap-2 text-lg text-neutral-300 hover:text-[var(--hover-color)] transition-colors duration-300"
                   >
                     <Icon icon={icon} />
                     <span>{label}</span>
                   </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+                ))}
+                
+                {/* User Profile in Mobile Menu */}
+                <SignedIn>
+                  <UserButton appearance={{
+                    elements: {
+                      avatarBox: {
+                        width: "40px",
+                        height: "40px"
+                      }
+                    }
+                  }} />
+                </SignedIn>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
     </>

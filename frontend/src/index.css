@@ -33,3 +33,19 @@
   transition-duration: 1s;
   scale: 1.02;
 }
+
+.dashboard-container {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+}

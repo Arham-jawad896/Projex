@@ -25,7 +25,7 @@ const features = [
 // FeatureCard component to reduce repetition
 const FeatureCard = ({ title, description, icon }) => (
   <motion.article
-    className="p-8 bg-gradient-to-r from-primary to-secondary shadow-xl rounded-lg cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
+    className="p-8 bg-gradient-to-r from-primary to-secondary shadow-xl rounded-lg cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-lg card-shine-effect" // Add the shine effect class here
     initial={{ opacity: 0, y: 50 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6, ease: 'easeOut' }}

@@ -1,254 +1,191 @@
-import React, { memo, useMemo } from 'react';
-import { ChartBar, Clock, TrendingUp, Users, AlertTriangle } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
+import { Button } from "../../../components/ui/button";
+import { Badge } from "../../../components/ui/badge";
+import { ScrollArea } from "../../../components/ui/scroll-area";
+import { Separator } from "../../../components/ui/separator";
+import { Progress } from "../../../components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select";
+import { Brain, Sparkles, AlertTriangle, Zap, Users, LineChart, RefreshCw, Settings2, BarChart3 } from "lucide-react";
 
-// Memoized Card Component to prevent unnecessary re-renders
-const Card = memo(({ 
-  title, 
-  children, 
-  className = '', 
-  icon: Icon = null 
-}) => {
-  return (
-    <div 
-      className={`bg-card-background w-full max-w-md p-6 rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl hover:bg-card-hover ${className}`}
-      aria-labelledby={`card-title-${title.replace(/\s+/g, '-').toLowerCase()}`}
-    >
-      <div className="flex items-center mb-4">
-        {Icon && <Icon className="mr-3 text-text-primary" size={24} />}
-        <h2 
-          id={`card-title-${title.replace(/\s+/g, '-').toLowerCase()}`} 
-          className="text-2xl font-semibold text-text-primary"
-        >
-          {title}
-        </h2>
-      </div>
-      {children}
-    </div>
-  );
-});
+const DashboardPage = () => {
+  const [activeRole, setActiveRole] = useState("manager");
+  const [refreshKey, setRefreshKey] = useState(0);
 
-// Memoized Progress Indicator Component
-const ProgressBar = memo(({ 
-  value, 
-  max = 100, 
-  label, 
-  color = 'bg-progressBar' 
-}) => {
-  const percentage = Math.min((value / max) * 100, 100);
-  return (
-    <div className="mb-4" role="progressbar" aria-valuenow={value} aria-valuemin="0" aria-valuemax={max}>
-      <div className="flex justify-between mb-1">
-        <span className="text-sm font-medium text-text-primary">{label}</span>
-        <span className="text-sm font-medium text-text-primary">{`${percentage.toFixed(0)}%`}</span>
-      </div>
-      <div className="w-full bg-divider rounded-full h-2.5">
-        <div 
-          className={`${color} h-2.5 rounded-full transition-all duration-500`} 
-          style={{ width: `${percentage}%` }}
-        ></div>
-      </div>
-    </div>
-  );
-});
+  // Simulated real-time data updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRefreshKey(prev => prev + 1);
+    }, 15000);
+    return () => clearInterval(interval);
+  }, []);
 
-// Memoized Role-Based Dashboard Section with useMemo for project columns
-const RoleBasedDashboard = memo(() => {
-  const projectColumns = useMemo(() => [
-    { title: 'Project Timeline', content: 'Timeline Visualization' },
-    { title: 'Project Status', content: 'Status Overview' },
-    { title: 'Resource Allocation', content: 'Resource Distribution' }
-  ], []);
+  const projects = [
+    {
+      id: 1,
+      name: "Frontend App",
+      progress: 75,
+      health: 92,
+      tasks: 34,
+      blockers: 2
+    },
+    {
+      id: 2,
+      name: "Backend API",
+      progress: 60,
+      health: 85,
+      tasks: 28,
+      blockers: 4
+    },
+    {
+      id: 3,
+      name: "Mobile App",
+      progress: 40,
+      health: 78,
+      tasks: 45,
+      blockers: 3
+    }
+  ];
 
-  return (
-    <div 
-      className="w-full max-w-5xl bg-card-background rounded-lg p-6 shadow-lg"
-      aria-label="Role-Based Project Dashboard"
-    >
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {projectColumns.map((column, index) => (
-          <div 
-            key={index} 
-            className="bg-card-background rounded-lg p-4"
-            aria-label={column.title}
-          >
-            <h3 className="text-lg font-medium text-text-primary mb-3">
-              {column.title}
-            </h3>
-            <div className="w-full h-32 bg-card-header rounded-md flex items-center justify-center text-text-secondary">
-              {column.content}
+  const roleViews = {
+    manager: [
+      { type: "progress", label: "Overall Progress" },
+      { type: "health", label: "Team Health" },
+      { type: "efficiency", label: "Delivery Efficiency" }
+    ],
+    developer: [
+      { type: "tasks", label: "Active Tasks" },
+      { type: "blockers", label: "Technical Blockers" },
+      { type: "performance", label: "Code Quality" }
+    ],
+  };
+
+  const ProjectCard = ({ project }) => (
+    <Card className="bg-[#1A1F2B]/80 backdrop-blur-sm border-[#2C3142] hover:border-[#3C4152] transition-all duration-300 p-4">
+      <CardHeader className="pb-2">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg font-medium text-white">{project.name}</CardTitle>
+          <Badge variant="outline"
+            className={`${project.health >= 90 ? 'bg-green-500/20 text-green-400 p-[5px]' :
+              project.health >= 70 ? 'bg-yellow-500/20 text-yellow-400' :
+                'bg-red-500/20 text-red-400'}`}>
+            Health: {project.health}%
+          </Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-400">Progress</span>
+              <span className="text-white">{project.progress}%</span>
+            </div>
+            <Progress value={project.progress} className="h-1.5" />
+          </div>
+          <div className="grid grid-cols-2 gap-4 pt-2">
+            <div className="bg-[#2C3142]/50 p-3 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-purple-400" />
+                <span className="text-sm text-gray-400">Tasks</span>
+              </div>
+              <p className="text-xl font-bold mt-1 text-white">{project.tasks}</p>
+            </div>
+            <div className="bg-[#2C3142]/50 p-3 rounded-lg">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-orange-400" />
+                <span className="text-sm text-gray-400">Blockers</span>
+              </div>
+              <p className="text-xl font-bold mt-1 text-white">{project.blockers}</p>
             </div>
           </div>
-        ))}
-      </div>
-    </div>
-  );
-});
-
-// Memoized Metrics Grid to prevent unnecessary re-renders
-const MetricsGrid = memo(() => {
-  const metrics = useMemo(() => [
-    { label: "On-Time Delivery", value: "92%", icon: Clock },
-    { label: "Customer Satisfaction", value: "88%", icon: Users },
-    { label: "Revenue Growth", value: "15%", icon: TrendingUp },
-    { label: "New Users", value: "540", icon: Users }
-  ], []);
-
-  return (
-    <div className="grid grid-cols-2 gap-4">
-      {metrics.map((metric, index) => (
-        <div key={index} className="text-center">
-          <div className="flex justify-center mb-2">
-            <metric.icon className="text-text-primary" size={20} />
-          </div>
-          <p className="text-sm text-white mb-1">{metric.label}</p>
-          <h3 className="text-xl font-semibold text-text-primary">{metric.value}</h3>
         </div>
-      ))}
-    </div>
+      </CardContent>
+    </Card>
   );
-});
 
-// Main Overview Component with performance optimizations
-const Overview = memo(() => {
-  const projectProgressData = useMemo(() => [
-    { name: "Project Alpha", progress: 75 },
-    { name: "Project Beta", progress: 45 },
-    { name: "Project Gamma", progress: 90 }
-  ], []);
+  const MetricCard = ({ type, value, trend, label }) => (
+    <Card className="bg-[#1A1F2B]/80 backdrop-blur-sm border-[#2C3142]">
+      <CardContent className="pt-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            {type === "progress" && <BarChart3 className="h-5 w-5 text-purple-400" />}
+            {type === "health" && <Users className="h-5 w-5 text-cyan-400" />}
+            {type === "efficiency" && <Zap className="h-5 w-5 text-yellow-400" />}
+          </div>
+          <Badge variant="outline"
+            className={`${trend === 'up' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'} p-[5px]`}>
+            {trend === 'up' ? '+' : '-'}5%
+          </Badge>
+        </div>
+        <div className="text-xl font-semibold text-white mb-2">{label}</div> {/* This line adds the label */}
+        <div className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+          {value}%
+        </div>
+      </CardContent>
+    </Card>
+  );
+
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl mt-[24px]">
-      <header className="mb-12">
-        <h1 
-          className="text-4xl font-bold text-text-primary mb-6"
-          data-testid="dashboard-title"
-        >
-          Dashboard Overview
-        </h1>
-      </header>
+    <div className="text-white container mx-auto px-6 py-8 max-w-7xl mt-[24px]">
+      <div className="max-w-[1600px] mx-auto">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                Multi-Project Overview
+              </h1>
+              <Badge variant="outline" className="bg-purple-500/20 text-purple-400 border-purple-500/30 p-[5px]">
+                Live Updates
+              </Badge>
+            </div>
+            <p className="mt-2 text-gray-400">Real-time insights across all active projects</p>
+          </div>
 
-      {/* Key Performance Cards */}
-      <section 
-        className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
-        aria-label="Key Performance Indicators"
-      >
-        {/* Overall Progress Card */}
-        <Card 
-          title="Overall Progress" 
-          icon={ChartBar}
-          className="flex flex-col"
-        >
-          <div className="flex items-center justify-between">
-            <div 
-              className="flex items-center justify-center border-4 border-divider w-20 h-20 rounded-full bg-gradient-to-r from-cyan-700 to-blue-800"
-              aria-label="Total Project Progress"
+          <div className="flex items-center gap-4">
+            <Select value={activeRole} onValueChange={setActiveRole}>
+              <SelectTrigger className="w-[180px] bg-[#2C3142] border-0 text-white">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="manager">Manager View</SelectItem>
+                <SelectItem value="developer">Developer View</SelectItem>
+                <SelectItem value="designer">Designer View</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setRefreshKey(prev => prev + 1)}
+              className="text-white hover:bg-white/10 border-[#2C3142]"
             >
-              <span className="text-2xl font-bold text-white">78%</span>
-            </div>
-            <div className="text-right text-text-secondary">
-              <p className="text-white">5 Projects</p>
-              <p className="text-white">23 Tasks Remaining</p>
-            </div>
-          </div>
-        </Card>
-
-        {/* Health Scores Card */}
-        <Card 
-          title="Health Scores" 
-          icon={AlertTriangle}
-        >
-          <ProgressBar 
-            value={85} 
-            label="Project A" 
-            color="bg-green-700"
-          />
-          <ProgressBar 
-            value={65} 
-            label="Project B" 
-            color="bg-yellow-700"
-          />
-          <ProgressBar 
-            value={40} 
-            label="Project C" 
-            color="bg-red-700"
-          />
-        </Card>
-
-        {/* Key Metrics Card */}
-        <Card 
-          title="Key Metrics" 
-          icon={TrendingUp}
-        >
-          <MetricsGrid />
-        </Card>
-      </section>
-
-      {/* Role-Based Dashboard */}
-      <section className="mb-12">
-        <h2 className="text-3xl font-bold text-text-primary mb-6">
-          Role-Based Dashboard
-        </h2>
-        <RoleBasedDashboard />
-      </section>
-
-      {/* Dashboard Insights */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Smart Gantt Chart */}
-        <div 
-          className="bg-card-background rounded-lg p-6 shadow-lg"
-          aria-label="Smart Gantt Chart"
-        >
-          <h3 className="text-xl font-semibold text-text-primary mb-4">
-            Smart Gantt Chart
-          </h3>
-          <div className="w-full h-64 bg-gradient-to-br from-indigo-800 to-teal-700 rounded-md mb-4"></div>
-          <div className="flex justify-between text-text-secondary">
-            <span>Risks: 3</span>
-            <span>Delays: 2</span>
-            <span>Upcoming Milestones: 5</span>
+              <RefreshCw className="h-4 w-4" />
+            </Button>
           </div>
         </div>
 
-        {/* Task Progress Meter */}
-        <div 
-          className="bg-card-background rounded-lg p-6 shadow-lg"
-          aria-label="Task Progress Meter"
-        >
-          <h3 className="text-xl font-semibold text-text-primary mb-4">
-            Task Progress Meter
-          </h3>
-          {projectProgressData.map((project, index) => (
-            <ProgressBar 
-              key={index}
-              value={project.progress} 
-              label={project.name}
-              color={ 
-                project.progress > 80 ? 'bg-green-700' : 
-                project.progress > 50 ? 'bg-yellow-700' : 
-                'bg-red-700'
-              }
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {roleViews[activeRole].map((metric, i) => (
+            <MetricCard
+              key={metric.type}
+              type={metric.type}
+              value={75 + i * 5}
+              trend={i % 2 === 0 ? 'up' : 'down'}
+              label={metric.label}  
             />
           ))}
-          <p className="text-sm text-white mt-2">
-            AI-predicted completion rates shown
-          </p>
         </div>
-      </section>
 
-      {/* Team Workload Distribution */}
-      <section 
-        className="bg-card-background rounded-lg p-6 mt-6 shadow-lg"
-        aria-label="Team Workload Distribution"
-      >
-        <h3 className="text-xl font-semibold text-text-primary mb-4">
-          Team Workload Distribution
-        </h3>
-        <div className="w-full h-64 bg-gradient-to-r from-indigo-800 to-teal-700 rounded-md flex items-center justify-center">
-          <p className="text-white font-semibold">Workload Visualization</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map(project => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
         </div>
-      </section>
+      </div>
     </div>
   );
-});
+};
 
-export default Overview;
+export default DashboardPage;

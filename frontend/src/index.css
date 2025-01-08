@@ -49,3 +49,9 @@
   flex-grow: 1;
   padding: 20px;
 }
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}

@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider, NavLink } from 'react-router-dom';
-import { Suspense, lazy, useMemo } from 'react';
+import React, { Suspense, lazy, useMemo } from 'react';
 import './index.css';
 import { Helmet } from 'react-helmet';
 import Layout from './Layout/MainLayout';

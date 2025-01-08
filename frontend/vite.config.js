@@ -4,14 +4,30 @@ import path from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
 import compression from 'vite-plugin-compression';
 import viteImagemin from 'vite-plugin-imagemin';
+import tailwindcss from 'tailwindcss'; // Import TailwindCSS as ES module
+import autoprefixer from 'autoprefixer'; // Import Autoprefixer as ES module
+
+const ReactCompilerConfig = {
+  runtimeModule: '@/mycache',
+};
 
 export default defineConfig(({ mode }) => {
   const isProduction = mode === 'production';
 
   return {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'), // Alias for src folder
+      },
+    },
+
     plugins: [
       // React plugin for Vite with fast refresh
-      react(),
+      react({
+        babel: {
+          plugins: [],
+        },
+      }),
 
       // Bundle visualizer (only enabled in production builds)
       isProduction &&
@@ -27,8 +43,6 @@ export default defineConfig(({ mode }) => {
         deleteOriginFile: false, // Keep original files
       }),
 
-      // PWA plugin for offline and app-like functionali
-
       // Image optimization
       viteImagemin({
         gifsicle: { optimizationLevel: 7, interlaced: false },
@@ -43,12 +57,6 @@ export default defineConfig(({ mode }) => {
         },
       }),
     ],
-
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, './src'), // Alias for src folder
-      },
-    },
 
     server: {
       port: 5173, // Development server port
@@ -75,6 +83,21 @@ export default defineConfig(({ mode }) => {
 
     define: {
       __APP_ENV__: JSON.stringify(mode), // Define environment-specific global variables
+    },
+
+    css: {
+      postcss: {
+        plugins: [
+          tailwindcss, // Use the TailwindCSS plugin
+          autoprefixer, // Use Autoprefixer plugin
+        ],
+      },
+    },
+
+    esbuild: {
+      minify: true,
+      target: 'esnext',
+      treeShaking: true,
     },
   };
 });

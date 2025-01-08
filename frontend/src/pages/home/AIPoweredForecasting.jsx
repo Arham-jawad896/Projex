@@ -38,8 +38,8 @@ const AIForecasting = () => {
     <main className="container mx-auto px-4 py-10 max-w-7xl">
       {/* Header Section */}
       <header className="mb-14 text-center">
-        <h1 className="text-4xl font-extrabold text-text-primary leading-tight mb-4 mt-[24px]">AI-Powered Forecasting</h1>
-        <p className="text-lg text-text-secondary max-w-3xl mx-auto">
+        <h1 className="text-[36px] font-bold text-[#E5E7EB] leading-tight mb-4 mt-[24px]">AI-Powered Forecasting</h1>
+        <p className="text-lg text-[#D1D5DB] max-w-3xl mx-auto">
           Leverage cutting-edge AI to proactively manage risks and optimize task priorities, ensuring seamless project execution and success.
         </p>
       </header>
@@ -51,7 +51,7 @@ const AIForecasting = () => {
           {riskData.map((risk, index) => (
             <article
               key={index}
-              className="bg-card-background p-6 rounded-lg shadow-md hover:shadow-lg transition"
+              className="bg-card-background p-6 rounded-lg shadow-md hover:shadow-lg hover:scale-[103%] transition-transform duration-300 ease-in-out"
               aria-label={`Risk Notification - ${risk.label}`}
             >
               <div className="flex justify-between items-center mb-5">
@@ -69,28 +69,41 @@ const AIForecasting = () => {
 
       {/* Predictive Task Re-Prioritization Section */}
       <section className="mb-14">
-        <h2 className="text-3xl font-bold text-text-primary mb-8">Predictive Task Re-Prioritization</h2>
-        <div className="bg-card-background p-6 rounded-lg shadow-md">
-          <table className="w-full text-text-primary">
-            <thead>
-              <tr className="text-left text-lg font-semibold border-b border-divider">
-                <th className="py-4">Task</th>
-                <th className="py-4">Priority</th>
-                <th className="py-4">AI Suggestion</th>
-              </tr>
-            </thead>
-            <tbody>
-              {taskSuggestions.map((task, index) => (
-                <tr key={index} className="hover:bg-divider/25 transition">
-                  <td className="py-4 text-base font-medium">{task.task}</td>
-                  <td className="py-4 text-base font-medium capitalize text-highlight">{task.priority}</td>
-                  <td className="py-4 text-base font-light">{task.suggestion}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+  <h2 className="text-3xl font-bold text-text-primary mb-8">
+    Predictive Task Re-Prioritization
+  </h2>
+  <div className="bg-card-background p-6 rounded-lg shadow-md">
+    <table className="w-full text-text-primary border-collapse">
+      <thead>
+        <tr className="text-left text-lg font-bold border-b border-divider">
+          <th className="py-2 text-[18px] uppercase tracking-wide text-[#E5E7EB]">
+            Task
+          </th>
+          <th className="py-2 text-[18px] uppercase tracking-wide text-[#E5E7EB]">
+            Priority
+          </th>
+          <th className="py-2 text-[18px] uppercase tracking-wide text-[#E5E7EB]">
+            AI Suggestion
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {taskSuggestions.map((task, index) => (
+          <tr
+            key={index}
+            className="hover:bg-divider/25 transition duration-300 ease-in-out">
+            <td className="py-4 text-[16px] font-medium">{task.task}</td>
+            <td className="py-4 text-[16px] font-semibold capitalize text-highlight">
+              {task.priority}
+            </td>
+            <td className="py-4 text-[16px] font-light">{task.suggestion}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>
+
     </main>
   );
 };

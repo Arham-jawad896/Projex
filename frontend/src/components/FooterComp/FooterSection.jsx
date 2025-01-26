@@ -3,7 +3,9 @@ import { Twitter, Facebook, Instagram } from 'react-feather'; // Import Feather 
 import { Helmet } from 'react-helmet'; // For SEO management
 import { motion } from 'framer-motion'; // For animations
 
-const Footer = () => (
+const Footer = () => {
+  let date = new Date()
+  return (
   <footer className="bg-gradient-to-t from-primary to-secondary text-text-footer py-16">
     <Helmet>
       <meta
@@ -114,7 +116,7 @@ const Footer = () => (
 
       <div className="border-t border-card-text/10 mt-16 pt-6 text-center">
         <p className="text-sm text-card-text/80">
-          © 2024 Projex. All rights reserved. |{' '}
+          © {date.getFullYear} Projex. All rights reserved. |{' '}
           <a href="/privacy" className="hover:text-primary">Privacy Policy</a> |{' '}
           <a href="/terms" className="hover:text-primary">Terms of Service</a>
         </p>
@@ -122,5 +124,5 @@ const Footer = () => (
     </div>
   </footer>
 );
-
+}
 export default Footer;

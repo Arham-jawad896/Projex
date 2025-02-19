@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from "react";
 
 const DynamicComponent = ({ dashboardKey, componentName }) => {
   const [Component, setComponent] = useState(null);
@@ -7,7 +7,7 @@ const DynamicComponent = ({ dashboardKey, componentName }) => {
   useEffect(() => {
     const componentPath = `./pages/${dashboardKey}/${componentName}.jsx`;
 
-    const modules = import.meta.glob('./pages/*/*.jsx'); // Glob import
+    const modules = import.meta.glob("./pages/*/*.jsx"); // Glob import
     if (modules[componentPath]) {
       const importedComponent = lazy(() => modules[componentPath]());
       setComponent(importedComponent); // Set the component dynamically

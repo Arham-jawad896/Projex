@@ -1,23 +1,25 @@
-import React from 'react';
-import { Activity, Users, Settings } from 'react-feather'; // Import specific Feather icons
-import { Helmet } from 'react-helmet'; // Import react-helmet for SEO management
-import { motion } from 'framer-motion'; // Import framer-motion for animations
+import React from "react";
+import { Activity, Users, Settings } from "react-feather"; // Import specific Feather icons
+import { Helmet } from "react-helmet"; // Import react-helmet for SEO management
+import { motion } from "framer-motion"; // Import framer-motion for animations
 
 // Define feature data outside the component to avoid re-creation on each render
 const features = [
   {
-    title: 'AI-Powered Forecasting',
-    description: 'Predict project outcomes and deadlines with unparalleled accuracy.',
+    title: "AI-Powered Forecasting",
+    description:
+      "Predict project outcomes and deadlines with unparalleled accuracy.",
     icon: <Activity className="h-12 w-12 text-gray-500" />, // Use Feather icons with sizing and color
   },
   {
-    title: 'Real-Time Collaboration',
-    description: 'Work seamlessly with your team, no matter where you are.',
+    title: "Real-Time Collaboration",
+    description: "Work seamlessly with your team, no matter where you are.",
     icon: <Users className="h-12 w-12 text-gray-500" />, // Use Feather icons with sizing and color
   },
   {
-    title: 'Workflow Automation',
-    description: 'Automate repetitive tasks to save time and focus on what matters.',
+    title: "Workflow Automation",
+    description:
+      "Automate repetitive tasks to save time and focus on what matters.",
     icon: <Settings className="h-12 w-12 text-gray-500" />, // Use Feather icons with sizing and color
   },
 ];
@@ -28,7 +30,7 @@ const FeatureCard = ({ title, description, icon }) => (
     className="p-8 bg-gradient-to-r from-primary to-secondary shadow-xl rounded-lg cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-lg card-shine-effect" // Add the shine effect class here
     initial={{ opacity: 0, y: 50 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6, ease: 'easeOut' }}
+    transition={{ duration: 0.6, ease: "easeOut" }}
     aria-label={`Feature: ${title}`}
   >
     <div className="mb-4 text-center">{icon}</div>
@@ -44,7 +46,12 @@ const Features = () => (
         name="description"
         content="Explore Projex's features like AI-powered forecasting, real-time collaboration, and workflow automation to improve your project management."
       />
-      <meta name="keywords" content="project management, AI, forecasting, collaboration, automation" />
+
+      <meta
+        name="keywords"
+        content="project management, AI, forecasting, collaboration, automation"
+      />
+
       <meta name="robots" content="index, follow" />
       <title>Features - Projex</title>
     </Helmet>

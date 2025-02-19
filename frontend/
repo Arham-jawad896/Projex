@@ -1,0 +1,169 @@
+import React, { useState, useEffect  } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button";
+import { Badge  } from "@/components/ui/badge";
+import { ScrollArea  } from "@/components/ui/scroll-area";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+import {
+  Brain,
+  AlertTriangle,
+  Clock,
+  Sparkles,
+  ArrowRight,
+  ArrowUp,
+  ArrowDown,
+  RefreshCw,
+  Timer,
+  Zap,
+  Bell,
+  Calendar,
+} from "lucide-react";
+
+const AIPoweredForecasting = () => {
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedMilestone, setSelectedMilestone] = useState(null);
+  const [showRiskDialog, setShowRiskDialog] = useState(false);
+  const [riskDetails, setRiskDetails] = useState(null);
+
+  const [tasks, setTasks] = useState([
+    {
+      id: 1,
+      name: "API Integration",
+      deadline: "2024-02-15",
+      risk: "high",
+      riskReason: "Dependencies not resolved",
+      suggestedDeadline: "2024-02-20",
+      priority: 1,
+      suggestedPriority: 3,
+      notifications: [
+        {
+          type: "risk",
+          message: "Critical dependency missing",
+          impact: "high",
+          timestamp: "2 hours ago",
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: "User Authentication",
+      deadline: "2024-02-10",
+      risk: "medium",
+      riskReason: "Resource availability concern",
+      suggestedDeadline: "2024-02-12",
+      priority: 2,
+      suggestedPriority: 1,
+      notifications: [
+        {
+          type: "risk",
+          message: "Resource allocation needed",
+          impact: "medium",
+          timestamp: "1 hour ago",
+        },
+      ],
+    },
+    {
+      id: 3,
+      name: "Dashboard UI",
+      deadline: "2024-02-18",
+      risk: "low",
+      riskReason: "On track",
+      suggestedDeadline: "2024-02-18",
+      priority: 3,
+      suggestedPriority: 2,
+      notifications: [],
+    },
+  ]);
+
+  const [milestones, setMilestones] = useState([
+    {
+      name: "Beta Release",
+      date: "2024-03-01",
+      risk: "medium",
+      impactedBy: ["API Integration", "User Authentication"],
+      aiSuggestion: "Consider splitting into two phases",
+      notifications: [
+        {
+          type: "warning",
+          message: "Timeline at risk due to API delays",
+          impact: "medium",
+          timestamp: "1 hour ago",
+        },
+      ],
+    },
+    {
+      name: "Security Audit",
+      date: "2024-02-25",
+      risk: "high",
+      impactedBy: ["User Authentication"],
+      aiSuggestion: "Schedule preliminary review earlier",
+      notifications: [
+        {
+          type: "risk",
+          message: "Security vulnerabilities detected",
+          impact: "high",
+          timestamp: "30 minutes ago",
+        },
+      ],
+    },
+  ])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRefreshKey((prev) => prev + 1);
+    }, 10000);
+    return () => clearInterval(interval)
+  }, []);
+
+  const handleAcceptSuggestion = (taskId, hype) => {
+    setTasks(
+      tasks.map((task) => {
+        if (task.id === taskId) {
+          return {
+            ...task,
+            deadline:
+            type === "deadline" ? task.suggestedDeadline : task.deadline,
+            priority:
+            type === "priority" ? task.suggestedPriority : task.priority,
+            notifications: task.notifications.filter((n) => n.type !== type),
+          };
+        }
+        return task;
+      }),
+    );
+  };
+
+  const handleShowRiskDetails = (item, type) => {
+    setRiskDetails({ ...item, type  });
+    setShowRiskDialog(true);
+  };
+
+  return (
+    <div className="text-white container mx-auto px-4 py-8 max-w-7xl mt-[24px]">
+      <div className="max-w-[1600px] mx-auto">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">AI-Powered Forecasting</h1>
+              <Badge
+                variant="outline"
+                className="bg-purple-500/20 text-purple-400 border-purple-500/30 p-4"
+              >
+                Predictive Insights
+              </Badge>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default AIPoweredForecasting;

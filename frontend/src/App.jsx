@@ -1,14 +1,14 @@
-import { createBrowserRouter, RouterProvider, NavLink } from 'react-router-dom';
-import React, { Suspense, lazy, useMemo } from 'react';
-import './index.css';
-import { Helmet } from 'react-helmet';
-import Layout from './Layout/MainLayout';
-import dashboardConfig from './dashboardConfig';
-import DynamicComponent from './DynamicComponent';
-import { DndProvider } from 'react-dnd'; // Import DndProvider
-import { HTML5Backend } from 'react-dnd-html5-backend'; // Import HTML5Backend for the drag and drop context
+import { createBrowserRouter, RouterProvider, NavLink } from "react-router-dom";
+import React, { Suspense, lazy, useMemo } from "react";
+import "./index.css";
+import { Helmet } from "react-helmet";
+import Layout from "./Layout/MainLayout";
+import dashboardConfig from "./dashboardConfig";
+import DynamicComponent from "./DynamicComponent";
+import { DndProvider } from "react-dnd"; // Import DndProvider
+import { HTML5Backend } from "react-dnd-html5-backend"; // Import HTML5Backend for the drag and drop context
 
-const Home = lazy(() => import('./pages/Home')); // Lazy load Home page
+const Home = lazy(() => import("./pages/Home")); // Lazy load Home page
 
 const App = () => {
   // Memoize the route generation to prevent re-calculations
@@ -30,7 +30,10 @@ const App = () => {
                 <ul>
                   {sidebar.map((item) => (
                     <li key={item.path}>
-                      <NavLink to={`${path}/${item.path}`} activeClassName="active">
+                      <NavLink
+                        to={`${path}/${item.path}`}
+                        activeClassName="active"
+                      >
                         {item.title}
                       </NavLink>
                     </li>
@@ -49,6 +52,7 @@ const App = () => {
           </div>
         </Layout>
       ),
+
       children: sidebar.map((item) => ({
         path: `${path}/${item.path}`,
         element: (
@@ -65,7 +69,7 @@ const App = () => {
 
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: "/",
       element: (
         <Layout>
           <Helmet>
@@ -77,9 +81,10 @@ const App = () => {
           </Helmet>
         </Layout>
       ),
+
       children: [
         {
-          path: '/',
+          path: "/",
           element: (
             <Suspense fallback={<div>Loading...</div>}>
               <Home />
@@ -92,7 +97,9 @@ const App = () => {
   ]);
 
   return (
-    <DndProvider backend={HTML5Backend}> {/* Wrap the app in DndProvider */}
+    <DndProvider backend={HTML5Backend}>
+      {" "}
+      {/* Wrap the app in DndProvider */}
       <RouterProvider router={router} />
     </DndProvider>
   );

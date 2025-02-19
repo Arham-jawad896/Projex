@@ -1,6 +1,18 @@
-import React, { useState, useCallback, useMemo, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+  useRef,
+} from "react";
 import { Helmet } from "react-helmet";
-import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/clerk-react";
+import {
+  SignedIn,
+  SignedOut,
+  UserButton,
+  SignInButton,
+  SignUpButton,
+} from "@clerk/clerk-react";
 
 // Critical CSS with improved responsive design
 const criticalCSS = `
@@ -34,35 +46,43 @@ const criticalCSS = `
 
 // SVG Icons as Functional Components
 const Icon = React.memo(({ icon, className = "" }) => {
-  const icons = useMemo(() => ({
-    home: (
-      <>
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-        <polyline points="9 22 9 12 15 12 15 22" />
-      </>
-    ),
-    pricing: (
-      <>
-        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-        <line x1="3" y1="9" x2="21" y2="9" />
-        <line x1="9" y1="21" x2="9" y2="9" />
-      </>
-    ),
-    features: (
-      <>
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="18" x2="21" y2="18" />
-      </>
-    ),
-    about: (
-      <>
-        <circle cx="12" cy="12" r="10" />
-        <line x1="12" y1="8" x2="12" y2="12" />
-        <line x1="12" y1="16" x2="12" y2="16" />
-      </>
-    )
-  }), []); 
+  const icons = useMemo(
+    () => ({
+      home: (
+        <>
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </>
+      ),
+
+      pricing: (
+        <>
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+
+          <line x1="3" y1="9" x2="21" y2="9" />
+          <line x1="9" y1="21" x2="9" y2="9" />
+        </>
+      ),
+
+      features: (
+        <>
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </>
+      ),
+
+      about: (
+        <>
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12" y2="16" />
+        </>
+      ),
+    }),
+    [],
+  );
 
   return (
     <svg
@@ -85,17 +105,21 @@ const PostLoginNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const mobileMenuRef = useRef(null);
 
-  const navItems = useMemo(() => [
-    { label: "Home", href: "/home", icon: "home" },
-    { label: "Projects", href: "/projects", icon: "about" },
-    { label: "Tasks", href: "/tasks", icon: "features" },
-    { label: "Calendar", href: "/calendar", icon: "pricing" },
-    { label: "Team", href: "/team", icon: "pricing" },
-    { label: "Analytics", href: "/analytics", icon: "pricing" },
-    { label: "Integrations", href: "/integrations", icon: "pricing" },
-    { label: "Settings", href: "/settings", icon: "pricing" },
-    { label: "Help", href: "/help", icon: "pricing" }
-  ], []);
+  const navItems = useMemo(
+    () => [
+      { label: "Home", href: "/home", icon: "home" },
+      { label: "Projects", href: "/projects", icon: "about" },
+      { label: "Tasks", href: "/tasks", icon: "features" },
+      { label: "Calendar", href: "/calendar", icon: "pricing" },
+      { label: "Team", href: "/team", icon: "pricing" },
+      { label: "Analytics", href: "/analytics", icon: "pricing" },
+      { label: "Integrations", href: "/integrations", icon: "pricing" },
+      { label: "Settings", href: "/settings", icon: "pricing" },
+      { label: "Help", href: "/help", icon: "pricing" },
+    ],
+
+    [],
+  );
 
   const toggleMobileMenu = useCallback(() => {
     setIsMenuOpen((prev) => !prev);
@@ -132,6 +156,7 @@ const PostLoginNavbar = () => {
           name="description"
           content="Explore our innovative platform for managing projects, pricing, and features. Join us for an enhanced experience!"
         />
+
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
@@ -198,9 +223,9 @@ const PostLoginNavbar = () => {
                   elements: {
                     avatarBox: {
                       width: "40px", // Example size, adjust as needed
-                      height: "40px"
-                    }
-                  }
+                      height: "40px",
+                    },
+                  },
                 }}
               />
             </SignedIn>
@@ -214,13 +239,15 @@ const PostLoginNavbar = () => {
             aria-expanded={isMenuOpen}
           >
             <div
-              className={`w-6 h-1 bg-white rounded-full transition-transform duration-300 ease-in-out ${isMenuOpen ? 'transform rotate-45 translate-y-2' : ''}`}
+              className={`w-6 h-1 bg-white rounded-full transition-transform duration-300 ease-in-out ${isMenuOpen ? "transform rotate-45 translate-y-2" : ""}`}
             />
+
             <div
-              className={`w-6 h-1 bg-white rounded-full transition-opacity duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`}
+              className={`w-6 h-1 bg-white rounded-full transition-opacity duration-300 ${isMenuOpen ? "opacity-0" : "opacity-100"}`}
             />
+
             <div
-              className={`w-6 h-1 bg-white rounded-full transition-transform duration-300 ease-in-out ${isMenuOpen ? 'transform -rotate-45 -translate-y-2' : ''}`}
+              className={`w-6 h-1 bg-white rounded-full transition-transform duration-300 ease-in-out ${isMenuOpen ? "transform -rotate-45 -translate-y-2" : ""}`}
             />
           </button>
 
@@ -241,17 +268,19 @@ const PostLoginNavbar = () => {
                     <span>{label}</span>
                   </a>
                 ))}
-                
+
                 {/* User Profile in Mobile Menu */}
                 <SignedIn>
-                  <UserButton appearance={{
-                    elements: {
-                      avatarBox: {
-                        width: "40px",
-                        height: "40px"
-                      }
-                    }
-                  }} />
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        avatarBox: {
+                          width: "40px",
+                          height: "40px",
+                        },
+                      },
+                    }}
+                  />
                 </SignedIn>
               </div>
             </div>

@@ -1,11 +1,14 @@
-import React, { useMemo } from 'react';
-import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
-import dashboardConfig from './dashboardConfig'; // Your configuration file
-import Sidebar from './Sidebar'; // Your Sidebar component
-import DynamicComponent from './DynamicComponent'; // Dynamically loaded components
+import React, { useMemo } from "react";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import dashboardConfig from "./dashboardConfig"; // Your configuration file
+import Sidebar from "./Sidebar"; // Your Sidebar component
+import DynamicComponent from "./DynamicComponent"; // Dynamically loaded components
 
 const Dashboard = React.memo(({ dashboardKey }) => {
-  const dashboard = useMemo(() => dashboardConfig.find((d) => d.key === dashboardKey), [dashboardKey]);
+  const dashboard = useMemo(
+    () => dashboardConfig.find((d) => d.key === dashboardKey),
+    [dashboardKey],
+  );
 
   if (!dashboard) return null; // If dashboard is not found, return nothing
 
@@ -19,9 +22,9 @@ const Dashboard = React.memo(({ dashboardKey }) => {
               key={item.path}
               path={item.path}
               element={
-                <DynamicComponent 
-                  componentName={item.component} 
-                  dashboardKey={dashboard.key}  // Pass the dashboard key here
+                <DynamicComponent
+                  componentName={item.component}
+                  dashboardKey={dashboard.key} // Pass the dashboard key here
                 />
               }
             />

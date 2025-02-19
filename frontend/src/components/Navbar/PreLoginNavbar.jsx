@@ -1,6 +1,18 @@
-import React, { useState, useCallback, useMemo, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+  useRef,
+} from "react";
 import { Helmet } from "react-helmet";
-import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/clerk-react";
+import {
+  SignedIn,
+  SignedOut,
+  UserButton,
+  SignInButton,
+  SignUpButton,
+} from "@clerk/clerk-react";
 
 // Critical CSS with improved responsive design
 const criticalCSS = `
@@ -34,48 +46,59 @@ const criticalCSS = `
 
 // SVG Icons as Functional Components
 const Icon = React.memo(({ icon, className = "" }) => {
-  const icons = useMemo(() => ({
-    home: (
-      <>
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-        <polyline points="9 22 9 12 15 12 15 22" />
-      </>
-    ),
-    pricing: (
-      <>
-        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-        <line x1="3" y1="9" x2="21" y2="9" />
-        <line x1="9" y1="21" x2="9" y2="9" />
-      </>
-    ),
-    features: (
-      <>
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="18" x2="21" y2="18" />
-      </>
-    ),
-    about: (
-      <>
-        <circle cx="12" cy="12" r="10" />
-        <line x1="12" y1="8" x2="12" y2="12" />
-        <line x1="12" y1="16" x2="12" y2="16" />
-      </>
-    ),
-    contact: (
-      <>
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-      </>
-    ),
-    login: (
-      <>
-        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-        <polyline points="10 17 15 12 10 7" />
-        <line x1="15" y1="12" x2="3" y2="12" />
-      </>
-    )
-  }), []);
-  
+  const icons = useMemo(
+    () => ({
+      home: (
+        <>
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </>
+      ),
+
+      pricing: (
+        <>
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+
+          <line x1="3" y1="9" x2="21" y2="9" />
+          <line x1="9" y1="21" x2="9" y2="9" />
+        </>
+      ),
+
+      features: (
+        <>
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </>
+      ),
+
+      about: (
+        <>
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12" y2="16" />
+        </>
+      ),
+
+      contact: (
+        <>
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+        </>
+      ),
+
+      login: (
+        <>
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+
+          <polyline points="10 17 15 12 10 7" />
+          <line x1="15" y1="12" x2="3" y2="12" />
+        </>
+      ),
+    }),
+    [],
+  );
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -97,16 +120,20 @@ const ResponsiveNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const mobileMenuRef = useRef(null);
 
-  const navItems = useMemo(() => [
-    { label: "Home", href: "#home", icon: "home" },
-    { label: "About", href: "#about", icon: "about" },
-    { label: "Features", href: "#features", icon: "features" },
-    { label: "Pricing", href: "#pricing", icon: "pricing" },
-    { label: "Contact", href: "#contact", icon: "contact" }
-  ], []);
+  const navItems = useMemo(
+    () => [
+      { label: "Home", href: "#home", icon: "home" },
+      { label: "About", href: "#about", icon: "about" },
+      { label: "Features", href: "#features", icon: "features" },
+      { label: "Pricing", href: "#pricing", icon: "pricing" },
+      { label: "Contact", href: "#contact", icon: "contact" },
+    ],
+
+    [],
+  );
 
   const toggleMobileMenu = useCallback(() => {
-    setIsMenuOpen(prev => !prev);
+    setIsMenuOpen((prev) => !prev);
   }, []);
 
   const closeMobileMenu = useCallback(() => {
@@ -115,13 +142,17 @@ const ResponsiveNavbar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isMenuOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+      if (
+        isMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
         closeMobileMenu();
       }
     };
 
     const handleEscapeKey = (event) => {
-      if (event.key === 'Escape' && isMenuOpen) {
+      if (event.key === "Escape" && isMenuOpen) {
         closeMobileMenu();
       }
     };
@@ -148,13 +179,14 @@ const ResponsiveNavbar = () => {
           name="description"
           content="Explore our innovative platform for managing projects, pricing, and features. Join us for an enhanced experience!"
         />
+
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
       </Helmet>
       <style>{criticalCSS}</style>
-      
+
       {/* Main Navbar */}
       <nav
         aria-label="Main Navigation"
@@ -166,7 +198,9 @@ const ResponsiveNavbar = () => {
           {/* Logo */}
           <div className="flex items-center space-x-2 flex-shrink-0">
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-cyan-500/20 rounded-full flex items-center justify-center">
-              <span className="text-cyan-400 font-bold text-base sm:text-xl">Σ</span>
+              <span className="text-cyan-400 font-bold text-base sm:text-xl">
+                Σ
+              </span>
             </div>
           </div>
 
@@ -225,15 +259,63 @@ const ResponsiveNavbar = () => {
             aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
-                <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" strokeWidth="2" />
-                <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" strokeWidth="2" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+              >
+                <line
+                  x1="18"
+                  y1="6"
+                  x2="6"
+                  y2="18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+
+                <line
+                  x1="6"
+                  y1="6"
+                  x2="18"
+                  y2="18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
               </svg>
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
-                <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" strokeWidth="2" />
-                <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" strokeWidth="2" />
-                <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" strokeWidth="2" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+              >
+                <line
+                  x1="3"
+                  y1="6"
+                  x2="21"
+                  y2="6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+
+                <line
+                  x1="3"
+                  y1="12"
+                  x2="21"
+                  y2="12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+
+                <line
+                  x1="3"
+                  y1="18"
+                  x2="21"
+                  y2="18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
               </svg>
             )}
           </button>
@@ -241,92 +323,90 @@ const ResponsiveNavbar = () => {
 
         {/* Mobile Menu Overlay */}
         <div
-        ref={mobileMenuRef}
-        className={`md:hidden fixed inset-0 transition-all duration-300 transform z-40 ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        {/* Solid Background Layer */}
-        <div 
-          className="absolute inset-0 bg-[#0A0E14]" 
-        />
-
-        {/* Close Button */}
-        <button
-          onClick={closeMobileMenu}
-          className="absolute top-4 right-4 z-50 text-cyan-400 hover:text-white transition-colors"
-          aria-label="Close Menu"
+          ref={mobileMenuRef}
+          className={`md:hidden fixed inset-0 transition-all duration-300 transform z-40 ${
+            isMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
         >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            width="32" 
-            height="32" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2"
-          >
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
+          {/* Solid Background Layer */}
+          <div className="absolute inset-0 bg-[#0A0E14]" />
 
-        <div className="container mx-auto px-4 py-8 h-full flex flex-col relative z-40">
-          {/* Mobile Logo */}
-          <div className="flex justify-center mb-12">
-            <div className="w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center">
-              <span className="text-cyan-400 font-bold text-2xl">Σ</span>
+          {/* Close Button */}
+          <button
+            onClick={closeMobileMenu}
+            className="absolute top-4 right-4 z-50 text-cyan-400 hover:text-white transition-colors"
+            aria-label="Close Menu"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+
+          <div className="container mx-auto px-4 py-8 h-full flex flex-col relative z-40">
+            {/* Mobile Logo */}
+            <div className="flex justify-center mb-12">
+              <div className="w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center">
+                <span className="text-cyan-400 font-bold text-2xl">Σ</span>
+              </div>
+            </div>
+
+            {/* Mobile Navigation Links */}
+            <ul className="space-y-6 flex-grow">
+              {navItems.map(({ label, href, icon }) => (
+                <li
+                  key={label}
+                  className="bg-[#1A1F2B] rounded-xl mb-2 hover:bg-[#2C3142] transition-all duration-300"
+                >
+                  <a
+                    href={href}
+                    className="flex items-center gap-4 text-neutral-200 hover:text-cyan-400 transition-colors duration-300 px-4 py-4 rounded-xl text-lg"
+                    onClick={closeMobileMenu}
+                  >
+                    <Icon icon={icon} className="w-6 h-6" />
+                    <span>{label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            {/* Mobile Authentication Buttons */}
+            <div className="space-y-4 pb-8">
+              <SignedOut>
+                <SignInButton>
+                  <button
+                    className="w-full bg-[#1A1F2B] text-cyan-400 px-6 py-3 rounded-xl hover:bg-[#2C3142] border border-cyan-500/30 transition-all font-semibold tracking-wider uppercase flex items-center justify-center gap-2"
+                    onClick={closeMobileMenu}
+                  >
+                    <Icon icon="login" />
+                    Sign In
+                  </button>
+                </SignInButton>
+                <SignUpButton>
+                  <button
+                    className="w-full bg-[#1A1F2B] text-cyan-400 px-6 py-3 rounded-xl hover:bg-[#2C3142] border border-cyan-500/30 transition-all font-semibold tracking-wider uppercase mt-4 flex items-center justify-center gap-2"
+                    onClick={closeMobileMenu}
+                  >
+                    Sign Up
+                  </button>
+                </SignUpButton>
+              </SignedOut>
+              <SignedIn>
+                <div className="w-full flex justify-center">
+                  <UserButton />
+                </div>
+              </SignedIn>
             </div>
           </div>
-
-          {/* Mobile Navigation Links */}
-          <ul className="space-y-6 flex-grow">
-            {navItems.map(({ label, href, icon }) => (
-              <li 
-                key={label} 
-                className="bg-[#1A1F2B] rounded-xl mb-2 hover:bg-[#2C3142] transition-all duration-300"
-              >
-                <a
-                  href={href}
-                  className="flex items-center gap-4 text-neutral-200 hover:text-cyan-400 transition-colors duration-300 px-4 py-4 rounded-xl text-lg"
-                  onClick={closeMobileMenu}
-                >
-                  <Icon icon={icon} className="w-6 h-6" />
-                  <span>{label}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          {/* Mobile Authentication Buttons */}
-          <div className="space-y-4 pb-8">
-            <SignedOut>
-              <SignInButton>
-                <button
-                  className="w-full bg-[#1A1F2B] text-cyan-400 px-6 py-3 rounded-xl hover:bg-[#2C3142] border border-cyan-500/30 transition-all font-semibold tracking-wider uppercase flex items-center justify-center gap-2"
-                  onClick={closeMobileMenu}
-                >
-                  <Icon icon="login" />
-                  Sign In
-                </button>
-              </SignInButton>
-              <SignUpButton>
-                <button
-                  className="w-full bg-[#1A1F2B] text-cyan-400 px-6 py-3 rounded-xl hover:bg-[#2C3142] border border-cyan-500/30 transition-all font-semibold tracking-wider uppercase mt-4 flex items-center justify-center gap-2"
-                  onClick={closeMobileMenu}
-                >
-                  Sign Up
-                </button>
-              </SignUpButton>
-            </SignedOut>
-            <SignedIn>
-              <div className="w-full flex justify-center">
-                <UserButton />
-              </div>
-            </SignedIn>
-          </div>
         </div>
-      </div>
       </nav>
     </>
   );

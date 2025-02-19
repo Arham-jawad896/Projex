@@ -20,10 +20,12 @@ const HeroSection = () => {
             name="description"
             content="Revolutionize project management with AI-powered tools. Use smart forecasting, real-time collaboration, and automation to streamline your projects."
           />
+
           <meta
             name="keywords"
             content="project management, AI tools, real-time collaboration, forecasting, workflow automation"
           />
+
           <meta name="robots" content="index, follow" />
           <title>Revolutionize Project Management with AI-Powered Tools</title>
         </Helmet>

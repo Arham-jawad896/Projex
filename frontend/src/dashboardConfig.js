@@ -4,6 +4,7 @@ const dashboardConfig = [
     path: '/home',
     sidebar: [
       { title: 'Dashboard Overview', path: 'dashboard-overview', component: 'DashboardOverview' },
+      { title: 'AI Widgets', path: 'ai-widgets', component: 'AIWidgets' },
       { title: 'Performance Metrics', path: 'performance-metrics', component: 'PerformanceMetrics' },
       { title: 'AI-Powered Forecasting', path: 'ai-powered-forecasting', component: 'AIPoweredForecasting' },
       { title: 'Daily Insights', path: 'Daily Insights', component: 'DailyInsights' },
